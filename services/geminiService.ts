@@ -18,8 +18,10 @@ if (apiKey) {
   );
 }
 
-// Export the potentially null instance. Other parts of the app will need to check if it's available.
+// Export the potentially null instance and a flag indicating its availability.
+export const isApiAvailable = ai !== null;
 export { ai };
+
 
 // User-friendly error messages for when the API key is missing.
 const MISSING_KEY_ERROR_CHAT = "I'm sorry, my core systems aren't connected right now. The app developer needs to configure the API key for me to work.";

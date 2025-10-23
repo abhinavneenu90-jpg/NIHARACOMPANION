@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useMemo } from 'react';
 import { AppMode, Personality, ChatMessage, AiDiaryEntry } from './types';
 import { PERSONALITIES, UPGRADE_CODE } from './constants';
@@ -10,7 +11,38 @@ import AiDiaryMode from './components/modes/AiDiaryMode';
 import LiveMode from './components/modes/LiveMode';
 import SettingsModal from './components/SettingsModal';
 import UpgradeModal from './components/UpgradeModal';
-import { Settings, Zap } from 'lucide-react';
+import { Settings, Zap, KeyRound } from 'lucide-react';
+import { isApiAvailable } from './services/geminiService';
+
+const ApiKeyModal: React.FC = () => {
+    return (
+        <div className="fixed inset-0 bg-gray-950/90 backdrop-blur-sm flex items-center justify-center z-[100] animate-subtle-fade-in p-4">
+            <div className="glassmorphic rounded-2xl shadow-2xl p-8 w-full max-w-lg relative text-center border-2 border-yellow-500/50">
+                <div className="w-16 h-16 rounded-full bg-yellow-500/20 text-yellow-400 flex items-center justify-center mx-auto mb-4">
+                    <KeyRound size={32} />
+                </div>
+                <h2 className="text-3xl font-bold text-center mb-2 text-yellow-400">
+                    Configuration Required
+                </h2>
+                <p className="text-center text-gray-300 mb-6">
+                    Nihara is powered by the Google Gemini API. To begin, you need to provide your own API key.
+                </p>
+                <div className="text-left bg-black/20 p-4 rounded-lg">
+                    <h3 className="font-semibold text-lg mb-2 text-white">How to get started:</h3>
+                    <ol className="list-decimal list-inside space-y-2 text-gray-400">
+                        <li>Get your free API key from <a href="https://aistudio.google.com/app/apikey" target="_blank" rel="noopener noreferrer" className="text-blue-400 underline hover:text-blue-300">Google AI Studio</a>.</li>
+                        <li>In your deployment environment (like Netlify or Vercel), find the settings for environment variables.</li>
+                        <li>Create a new variable named <code className="bg-gray-700 text-amber-300 px-1.5 py-0.5 rounded-md text-sm">API_KEY</code>.</li>
+                        <li>Paste your key as the value and redeploy your application.</li>
+                    </ol>
+                </div>
+                 <p className="text-xs text-gray-500 mt-6">
+                    Your API key is kept secure and is not stored in the application's code. This step is necessary for the app to function.
+                </p>
+            </div>
+        </div>
+    );
+};
 
 const App: React.FC = () => {
     const [userName, setUserName] = useState<string>('');
@@ -82,6 +114,10 @@ const App: React.FC = () => {
                 return <ChatMode userName={userName} personality={personality} chatHistory={chatHistory} setChatHistory={setChatHistory} onInteraction={handleInteraction} isPro={isPro} />;
         }
     };
+
+    if (!isApiAvailable) {
+        return <ApiKeyModal />;
+    }
 
     if (!userName) {
         return (
