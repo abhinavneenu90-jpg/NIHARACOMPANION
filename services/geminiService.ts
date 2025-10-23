@@ -1,20 +1,20 @@
-
 import { GoogleGenAI, GenerateContentResponse, Type } from "@google/genai";
+import { API_KEY } from '../config';
 
 // Initialize ai as null by default.
 let ai: GoogleGenAI | null = null;
 
-// Attempt to get the API key from environment variables.
-const apiKey = process.env.API_KEY;
+// Attempt to get the API key from the config file.
+const apiKey = API_KEY;
 
-if (apiKey) {
-  // If the key exists, initialize the GoogleGenAI instance.
+if (apiKey && !apiKey.startsWith("YOUR_API_KEY")) {
+  // If the key exists and is not a placeholder, initialize the GoogleGenAI instance.
   ai = new GoogleGenAI({ apiKey });
 } else {
-  // If the key is missing, log a more prominent error. This is crucial for debugging on deployment platforms.
+  // If the key is missing or is a placeholder, log an error.
   console.error(
-    "FATAL: Gemini API key not found. The app will not function correctly. " +
-    "Please set the API_KEY environment variable in your deployment settings (e.g., on Netlify)."
+    "FATAL: Gemini API key not found or is a placeholder in config.ts. " +
+    "Please create a config.ts file at the root of your project and add your API key."
   );
 }
 

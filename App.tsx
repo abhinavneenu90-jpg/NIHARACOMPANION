@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useMemo } from 'react';
 import { AppMode, Personality, ChatMessage, AiDiaryEntry } from './types';
 import { PERSONALITIES, UPGRADE_CODE } from './constants';
@@ -29,13 +28,13 @@ const ApiKeyError: React.FC = () => {
                 </p>
                 <div className="text-left bg-black/20 p-4 rounded-lg">
                     <p className="text-gray-400">
-                        Please ensure you have a valid <code className="bg-gray-700 text-amber-300 px-1.5 py-0.5 rounded-md text-sm">.env</code> file at the root of your project with your API key:
+                        Please create a <code className="bg-gray-700 text-amber-300 px-1.5 py-0.5 rounded-md text-sm">config.ts</code> file at the root of your project and add your API key:
                         <br />
-                        <code className="bg-gray-800 text-gray-300 block mt-2 p-2 rounded">API_KEY=YOUR_API_KEY_HERE</code>
+                        <code className="bg-gray-800 text-gray-300 block mt-2 p-2 rounded">export const API_KEY = "YOUR_API_KEY_HERE";</code>
                     </p>
                 </div>
                  <p className="text-xs text-gray-500 mt-6">
-                    If you've just added the key, you may need to restart your development server. For deployment, ensure this is set as an environment variable.
+                    You can get a free API key from Google AI Studio. The app cannot function without it.
                 </p>
             </div>
         </div>
